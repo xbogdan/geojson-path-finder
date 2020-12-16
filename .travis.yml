@@ -3,3 +3,18 @@
    - "8"
    - "10"
    - "12"
+
+before_script:
+  - npm install -g webpack
+
+script: webpack -p
+
+deploy:
+  provider: pages
+  target_branch: webpack
+  local_dir: dist
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  name: Travis Webpack
+  on:
+    branch: master
