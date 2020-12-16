@@ -3,7 +3,7 @@
    - "12"
 
 before_script:
-  - npm install webpack-cli -g
+  - npm install webpack webpack-cli -g
 
 script: webpack -p
 
