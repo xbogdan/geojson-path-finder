@@ -84,8 +84,8 @@ function initialize(network) {
         }).addTo(map);
 
     control.setWaypoints([
-        [57.740, 11.99],
-        [57.68, 11.90],
+        [41.290438, -92.638499],
+        [42.049467, -92.908037],
     ]);
 
     var totalDistance = network.features.reduce(function(total, feature) {
@@ -116,15 +116,13 @@ function initialize(network) {
     var networkLayer = L.layerGroup(),
         vertices = router._pathFinder._graph.sourceVertices,
         renderer = L.canvas().addTo(map);
-    nodeNames.forEach(function(nodeName) {
-        var node = graph[nodeName];
-        Object.keys(node).forEach(function(neighbor) {
-            var c1 = vertices[nodeName],
-                c2 = vertices[neighbor];
-            L.polyline([[c1[1], c1[0]], [c2[1], c2[0]]], { weight: 1, opacity: 0.4, renderer: renderer, interactive: false })
-                .addTo(networkLayer)
-                .bringToBack();
-        });
+    network["features"].forEach(function(feature) {
+        var c1 = feature.geometry.coordinates[0],
+            c2 = feature.geometry.coordinates[feature.geometry.coordinates.length - 1];
+        L.polyline([[c1[1], c1[0]], [c2[1], c2[0]]], {weight: 5, opacity: 0.4, renderer: renderer, interactive: false , color: feature.properties.color})
+            .addTo(networkLayer)
+            .bringToBack();
+
     });
 
     L.control.layers(null, {
@@ -29158,8 +29156,6 @@ var Layers = Control.extend({
 		for (var i = inputs.length - 1; i >= 0; i--) {
 			input = inputs[i];
 			layer = this._getLayer(input.layerId).layer;
-			input.disabled = (layer.options.minZoom !== undefined && zoom < layer.options.minZoom) ||
-			                 (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
 
 		}
 	},
@@ -40603,43 +40599,17 @@ var highwaySpeeds = {
 var unknowns = {};
 
 function weightFn(a, b, props) {
-    var d = distance(point(a), point(b)) * 1000,
-        factor = 0.9,
-        type = props.highway,
-        forwardSpeed,
-        backwardSpeed;
-
-    if (props.maxspeed) {
-        forwardSpeed = backwardSpeed = Number(props.maxspeed);
-    } else {
-        var linkIndex = type.indexOf('_link');
-        if (linkIndex >= 0) {
-            type = type.substring(0, linkIndex);
-            factor *= 0.7;
-        }
-
-        forwardSpeed = backwardSpeed = highwaySpeeds[type] * factor;
-        if (!forwardSpeed) {
-            unknowns[type] = true;
-        }
-    }
-
-    if (props.oneway && props.oneway !== 'no' || props.junction && props.junction === 'roundabout') {
-        backwardSpeed = null;
-    }
+    var d = distance(point(a), point(b)) * 1000;
 
     return {
-        forward: forwardSpeed && (d / (forwardSpeed / 3.6)),
-        backward: backwardSpeed && (d / (backwardSpeed / 3.6)),
+        forward:  (d  / 3.6),
+        backward:  (d  / 3.6),
     };
 }
 
 module.exports = L.Class.extend({
     initialize: function(geojson) {
-        this._pathFinder = new PathFinder(geojson, {
-            precision: 1e-9,
-            weightFn: weightFn
-        });
+        this._pathFinder = new PathFinder(geojson,         );
         var vertices = this._pathFinder._graph.vertices;
         this._points = featurecollection(Object.keys(vertices)
             .filter(function(nodeName) {
