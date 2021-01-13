@@ -16,7 +16,6 @@ module.exports = function preprocess(graph, options) {
     if (graph.type === 'FeatureCollection') {
         // Graph is GeoJSON data, create a topology from it
         topo = topology(graph, options);
-        // console.log(topo.edges)
     } else if (graph.edges) {
         // Graph is a preprocessed topology
         topo = graph;
