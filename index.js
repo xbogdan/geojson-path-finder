@@ -1,6 +1,7 @@
 'use strict';
 
 var findPath = require('./dijkstra'),
+    findIsochronePoints = require('./isochrone'),
     preprocess = require('./preprocessor'),
     compactor = require('./compactor'),
     roundCoord = require('./round-coord'),
@@ -29,6 +30,25 @@ function PathFinder(graph, options) {
 }
 
 PathFinder.prototype = {
+    findPointsAround: function(a, b) {
+        var start = this._keyFn(roundCoord(a.geometry.coordinates, this._precision));
+
+        // We can't find a path if start or finish isn't in the
+        // set of non-compacted vertices
+        if (!this._graph.vertices[start]) {
+            return null;
+        }
+
+        var phantomStart = this._createPhantom(start);
+
+        let costs = findIsochronePoints(this._graph.compactedVertices, start, b);
+
+        let nodes = Object.keys(costs);
+
+        this._removePhantom(phantomStart);
+
+        return nodes;
+    },
     findPath: function(a, b) {
         var start = this._keyFn(roundCoord(a.geometry.coordinates, this._precision)),
             finish = this._keyFn(roundCoord(b.geometry.coordinates, this._precision));
