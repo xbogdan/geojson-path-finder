@@ -42,8 +42,7 @@ PathFinder.prototype = {
         let costs = findIsochronePoints(this._graph.compactedVertices, start, b);
 
         let nodes = Object.keys(costs);
-
-        return nodes;
+        return nodes.map((n) => n.split(',').map((v) => parseFloat(v)));
     },
 
     findPath: function(a, b) {
@@ -69,6 +68,8 @@ PathFinder.prototype = {
                     if (i > 0) {
                         cs = cs.concat(this._graph.compactedCoordinates[vs[i - 1]][v]);
                     }
+                    console.log(vs)
+                    console.log(this._graph.compactedCoordinates[vs[0]]);
 
                     return cs;
                 }.bind(this), []).concat([this._graph.sourceVertices[finish]]),

@@ -53,6 +53,8 @@ function weightFn(a, b, props) {
 }
 
 const pathFinder = new PathFinder(geojson);
-const points = pathFinder.findPointsAround(point([11.995450000000002, 57.71257000000001]), 5);
+ const points = pathFinder.findPointsAround(point([11.995450000000002, 57.71257000000001]), 5);
+
+// const points = pathFinder.findPath(point([11.995450000000002, 57.71257000000001]), point([11.995450000000002, 57.71257000000001]));
 
 console.log(points);
