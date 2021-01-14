@@ -1,5 +1,5 @@
 const PathFinder = require('../index.js'),
-      geojson = require('./network3.json'),
+      geojson = require('./france_road_network.json'),
       point = require('turf-point'),
       distance = require('@turf/distance').default;
 
