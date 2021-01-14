@@ -1,4 +1,4 @@
-CREATE TEMP FUNCTION geojson_find_points_around_(geojson STRING, startx FLOAT64, starty FLOAT64, max_cost FLOAT64) 
+CREATE TEMP FUNCTION geojson_find_points_around(geojson STRING, startx FLOAT64, starty FLOAT64, max_cost FLOAT64) 
 RETURNS STRING LANGUAGE js
 OPTIONS (
   library=["gs://bogdan-tools/geojson_path_finder.js"]
@@ -28,7 +28,7 @@ AS """
   }
 """;
 select
-  geojson_find_points_around_(concat('{"type": "FeatureCollection", "features": [{"type": "Feature","geometry":', string_agg(line, '},{"type":"Feature","geometry":'),"}]}"), -1.028, 46.56, 5  )
+  geojson_find_points_around(concat('{"type": "FeatureCollection", "features": [{"type": "Feature","geometry":', string_agg(line, '},{"type":"Feature","geometry":'),"}]}"), -1.028, 46.56, 5  )
 from `data-science-229608.routing_us.france_network`;
 
 
