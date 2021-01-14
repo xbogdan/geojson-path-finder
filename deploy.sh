@@ -34,6 +34,7 @@ webpack
 gsutil cp dist/geojson_path_finder.js $bucket
 
 # deploy UDF function to BQ
+# TODO add a directory of queries
 bq --dataset_id=$dataset --location=$location query < query.sql
 
 # cleanup
