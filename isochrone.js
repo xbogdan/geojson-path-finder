@@ -19,6 +19,9 @@ module.exports = function(graph, start, max_cost) {
         explored[node] = 1;
 
         var neighbours = graph[node];
+        
+        if (!neighbours) continue;
+
         Object.keys(neighbours).forEach(function(n) {
             var newCost = cost + neighbours[n];
 
