@@ -6,7 +6,8 @@ var findPath = require('./dijkstra'),
     compactor = require('./compactor'),
     roundCoord = require('./round-coord'),
     distance = require('@turf/distance').default,
-    point = require('turf-point');
+    point = require('turf-point'),
+    turf = require('@turf/turf');
 
 module.exports = PathFinder;
 
@@ -31,7 +32,7 @@ function PathFinder(graph, options) {
 
 PathFinder.prototype = {
     findPointsAround: function(a, b) {
-        var start = this._keyFn(roundCoord(a.geometry.coordinates, this._precision));
+        const start = this._keyFn(roundCoord(a.geometry.coordinates, this._precision));
 
         // We can't find a path if start isn't in the
         // set of non-compacted vertices
@@ -39,10 +40,28 @@ PathFinder.prototype = {
             return null;
         }
 
-        let costs = findIsochronePoints(this._graph.compactedVertices, start, b);
+        const costs = findIsochronePoints(this._graph.compactedVertices, start, b);
 
-        let nodes = Object.keys(costs);
-        return nodes.map((n) => n.split(',').map((v) => parseFloat(v)));
+        return Object.keys(costs).map((n) => n.split(',').map((v) => parseFloat(v)));
+    },
+
+    getIsoDistanceConvexHull: function(a, b) {
+        const nodes = this.findPointsAround(a, b);
+
+        const points = turf.featureCollection(nodes.map((v) => turf.point(v)));
+        const hull = turf.convex(points);
+
+        return hull;
+    },
+
+    getIsoDistanceConcaveHull: function(a, b) {
+        const nodes = this.findPointsAround(a, b);
+
+        const points = turf.featureCollection(nodes.map((v) => turf.point(v)));
+        const options = {units: 'kilometers', maxEdge: 10};
+        const hull = turf.concave(points, options);
+
+        return hull;
     },
 
     findPath: function(a, b) {
