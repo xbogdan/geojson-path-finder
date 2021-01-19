@@ -8,7 +8,9 @@ var findPath = require('./dijkstra'),
     roundCoord = require('./round-coord'),
     distance = require('@turf/distance').default,
     point = require('turf-point'),
-    turf = require('@turf/turf');
+    featureCollection = require('@turf/helpers'),
+    convex = require('@turf/convex'),
+    concave = require('@turf/concave');
 
 module.exports = PathFinder;
 
@@ -49,8 +51,8 @@ PathFinder.prototype = {
     getIsoDistanceConvexHull: function(a, b) {
         const nodes = this.findPointsAround(a, b);
 
-        const points = turf.featureCollection(nodes.map((v) => turf.point(v)));
-        const hull = turf.convex(points);
+        const points = featureCollection(nodes.map((v) => point(v)));
+        const hull = convex(points);
 
         return hull;
     },
@@ -58,9 +60,9 @@ PathFinder.prototype = {
     getIsoDistanceConcaveHull: function(a, b) {
         const nodes = this.findPointsAround(a, b);
 
-        const points = turf.featureCollection(nodes.map((v) => turf.point(v)));
+        const points = featureCollection(nodes.map((v) => point(v)));
         const options = {units: 'kilometers', maxEdge: 10};
-        const hull = turf.concave(points, options);
+        const hull = concave(points, options);
 
         return hull;
     },

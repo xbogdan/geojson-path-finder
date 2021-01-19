@@ -1,11 +1,6 @@
 const PathFinder = require('../index.js'),
-<<<<<<< HEAD
       geojson = require('./gothenburg.json'),
-=======
-      geojson = require('./network.json'),
->>>>>>> 74efa38d561b17ee43304e17c27207c1c144a639
       point = require('turf-point'),
-      turf = require('@turf/turf'),
       distance = require('@turf/distance').default;
 
 const highwaySpeeds = {
@@ -57,27 +52,6 @@ function weightFn(a, b, props) {
     };
 }
 
-<<<<<<< HEAD
-// const pathFinder = new PathFinder(geojson);
-console.log(PathFinder.weightFunctions);
-// const points = pathFinder.getIsoDistance(point([11.9670375, 57.7035236]), 5000);
-=======
  const pathFinder = new PathFinder(geojson);
- const points = pathFinder.findPointsAround(point([8.444600000000001,59.489470000000004]), 5000);
+ const points = pathFinder.findPointsAround(point([11.9670375, 57.7035236]), 1);
  console.log(points);
-
-// var p = turf.featureCollection([
-//   turf.point([10.195312, 43.755225]),
-//   turf.point([10.404052, 43.8424511]),
-//   turf.point([10.579833, 43.659924]),
-//   turf.point([10.360107, 43.516688]),
-//   turf.point([10.14038, 43.588348]),
-//   turf.point([10.195312, 43.755225])
-// ]);
-// 
-// var hull = turf.convex(p);
-// console.log(hull);
-
-// const points = pathFinder.findPath(point([11.995450000000002, 57.71257000000001]), point([11.995450000000002, 57.71257000000001]));
-
->>>>>>> 74efa38d561b17ee43304e17c27207c1c144a639
