@@ -1,7 +1,7 @@
 'use strict';
 
-var explode = require('@turf/explode'),
-    roundCoord = require('./round-coord');
+const explode = require('@turf/explode'),
+      roundCoord = require('./round-coord');
 
 if (typeof explode !== 'function' && explode.default && typeof explode.default === 'function') {
     explode = explode.default;

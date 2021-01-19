@@ -16,7 +16,6 @@
   "dependencies": {
     "@turf/buffer": "^6.2.0",
     "@turf/concave": "^6.2.0",
-    "@turf/convex": "^6.2.0",
     "@turf/distance": "^6.0.1",
     "@turf/explode": "^6.2.0",
     "@turf/helpers": "^6.2.0",
