@@ -4,14 +4,17 @@ const findPath = require('./dijkstra'),
     findIsochronePoints = require('./isochrone'),
     preprocess = require('./preprocessor'),
     compactor = require('./compactor'),
-    weightFunctions = require('./weight_functions'),
+    WeightFunctions = require('./weight-functions'),
     roundCoord = require('./round-coord'),
     distance = require('@turf/distance').default,
     point = require('turf-point'),
     helpers = require('@turf/helpers'),
     concave = require('@turf/concave').default;
 
-module.exports = PathFinder;
+module.exports = {
+    PathFinder,
+    WeightFunctions,
+};
 
 function PathFinder(graph, options) {
     options = options || {};
@@ -62,7 +65,7 @@ PathFinder.prototype = {
         const points = helpers.featureCollection(nodes.map((v) => point(v)));
         const options = {units: 'kilometers', maxEdge: 10};
         const hull = concave(points, options);
-        
+
         return hull;
     },
 

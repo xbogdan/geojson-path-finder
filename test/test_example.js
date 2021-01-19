@@ -1,4 +1,4 @@
-const PathFinder = require('../index.js'),
+const GeoJsonPathFinder = require('../index.js'),
       geojson = require('./gothenburg.json'),
       point = require('turf-point'),
       distance = require('@turf/distance').default;
@@ -17,6 +17,9 @@ const highwaySpeeds = {
 };
 
 const unknowns = {};
+const PathFinder = GeoJsonPathFinder.PathFinder;
+const WeightFunctions = GeoJsonPathFinder.WeightFunctions;
+
 
 function weightFn(a, b, props) {
     let d = distance(point(a), point(b)) * 1000,
