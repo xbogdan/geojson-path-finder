@@ -1,25 +1,25 @@
-const PathFinder = require('../index.js'),
-      geojson = require('./gothenburg.json'),
-      point = require('turf-point'),
-      turf = require('@turf/turf'),
-      distance = require('@turf/distance').default;
+"use strict";
 
-const highwaySpeeds = {
-    motorway: 110,
-    trunk: 90,
-    primary: 80,
-    secondary: 70,
-    tertiary: 50,
-    unclassified: 50,
-    road: 50,
-    residential: 30,
-    service: 30,
-    living_street: 20
+module.exports = {
+    travelTimeWeightFn: weightFn,
 };
 
-const unknowns = {};
-
 function weightFn(a, b, props) {
+    const highwaySpeeds = {
+        motorway: 110,
+        trunk: 90,
+        primary: 80,
+        secondary: 70,
+        tertiary: 50,
+        unclassified: 50,
+        road: 50,
+        residential: 30,
+        service: 30,
+        living_street: 20
+    };
+
+    const unknowns = {};
+
     let d = distance(point(a), point(b)) * 1000,
         factor = 0.9,
         type = props.highway,
@@ -52,7 +52,3 @@ function weightFn(a, b, props) {
         backward: backwardSpeed && (d / (backwardSpeed / 3.6)),
     };
 }
-
-// const pathFinder = new PathFinder(geojson);
-console.log(PathFinder.weightFunctions);
-// const points = pathFinder.getIsoDistance(point([11.9670375, 57.7035236]), 5000);

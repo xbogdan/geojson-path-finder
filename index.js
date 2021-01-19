@@ -4,6 +4,7 @@ var findPath = require('./dijkstra'),
     findIsochronePoints = require('./isochrone'),
     preprocess = require('./preprocessor'),
     compactor = require('./compactor'),
+    weightFunctions = require('./weight_functions'),
     roundCoord = require('./round-coord'),
     distance = require('@turf/distance').default,
     point = require('turf-point'),
@@ -11,7 +12,7 @@ var findPath = require('./dijkstra'),
 
 module.exports = PathFinder;
 
-function PathFinder(graph, options) {    
+function PathFinder(graph, options) {
     options = options || {};
 
     if (!graph.compactedVertices) {
