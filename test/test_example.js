@@ -55,6 +55,6 @@ function weightFn(a, b, props) {
     };
 }
 
- const pathFinder = new PathFinder(geojson);
- const points = pathFinder.getIsoDistanceConcaveHull(point([11.9670375, 57.7035236]), 1);
+ const pathFinder = new PathFinder(geojson, { weightFn: weightFn });
+ const points = pathFinder.getIsoDistanceConcaveHull(point([11.9670375, 57.7035236]), 100);
  console.log(points);
