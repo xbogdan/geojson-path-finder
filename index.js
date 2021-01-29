@@ -45,7 +45,7 @@ PathFinder.prototype = {
             return null;
         }
 
-        const costs = findIsochronePoints(this._graph.compactedVertices, start, b);
+        const costs = findIsochronePoints(this._graph.vertices, start, b);
 
         return Object.keys(costs).map((n) => n.split(',').map((v) => parseFloat(v)));
     },

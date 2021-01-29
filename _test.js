@@ -1,29 +1,27 @@
-"use strict";
+const GeoJsonPathFinder = require('../index.js'),
+      geojson = require('./gothenburg.json'),
+      point = require('turf-point'),
+      distance = require('@turf/distance').default;
 
-const point = require('turf-point');
-const distance = require('@turf/distance').default;
-
-
-module.exports = {
-    travelTimeWeightFn: travelTimeWeightFn,
+const highwaySpeeds = {
+    motorway: 110,
+    trunk: 90,
+    primary: 80,
+    secondary: 70,
+    tertiary: 50,
+    unclassified: 50,
+    road: 50,
+    residential: 30,
+    service: 30,
+    living_street: 20
 };
 
-function travelTimeWeightFn(a, b, props) {
-    const highwaySpeeds = {
-        motorway: 110,
-        trunk: 90,
-        primary: 80,
-        secondary: 70,
-        tertiary: 50,
-        unclassified: 50,
-        road: 50,
-        residential: 30,
-        service: 30,
-        living_street: 20
-    };
+const unknowns = {};
+const PathFinder = GeoJsonPathFinder.PathFinder;
+const WeightFunctions = GeoJsonPathFinder.WeightFunctions;
 
-    const unknowns = {};
 
+function weightFn(a, b, props) {
     let d = distance(point(a), point(b)) * 1000,
         factor = 0.9,
         type = props.highway,
@@ -57,4 +55,5 @@ function travelTimeWeightFn(a, b, props) {
     };
 }
 
-
+ const pathFinder = new PathFinder(geojson, { weightFn: weightFn });
+ const points = pathFinder.getIsoDistanceConcaveHull(point([11.9670375, 57.7035236]), 100);

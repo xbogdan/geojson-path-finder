@@ -11,7 +11,6 @@ module.exports = function(graph, start, max_cost) {
     var queue = new Queue([initialState], function(a, b) { return a[0] - b[0]; });
     var explored = {};
 
-
     while (queue.length) {
         var state = queue.pop();
         var cost = state[0];
